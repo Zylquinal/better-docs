@@ -1,0 +1,3 @@
+[submodule "swagger-converter-cli"]
+	path = swagger-converter-cli
+	url = https://github.com/Zylquinal/swagger-converter-cli

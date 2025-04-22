@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Docs ‑ Stoplight Elements</title>
+
+    <!-- Fetch‑proxy shim -->
+    <script>
+        (() => {
+            const orig = window.fetch.bind(window);
+            window.fetch = (input, init) => {
+                const url = typeof input === 'string' ? input : input.url;
+                try {
+                    const u = new URL(url);
+                    if (u.protocol === 'http:' || u.protocol === 'https:') {
+                        return orig(`${location.origin}/api?url=${encodeURIComponent(u)}`, init);
+                    }
+                } catch {
+                }
+                return orig(input, init);
+            };
+        })();
+    </script>
+
+    <script src="https://unpkg.com/@stoplight/elements/web-components.min.js"></script>
+    <link  rel="stylesheet" href="https://unpkg.com/@stoplight/elements/styles.min.css" />
+
+    <link  rel="stylesheet" href="/static/styles.css" />
+</head>
+
+<body>
+<header>
+    <label>
+        Spec:
+        <select id="spec-selector"></select>
+    </label>
+
+    <div id="search-container">
+        <input
+                id="search-bar"
+                type="text"
+                placeholder="Search operations…"
+                autocomplete="off"
+        />
+        <div id="search-results"></div>
+    </div>
+
+    <button id="spec-filter-button">Filter Specs</button>
+    <button id="ra-button">RA Search</button>
+</header>
+
+<main id="viewer-container"></main>
+
+<div class="sl-modal" id="filter-modal">
+    <div class="sl-modal-content">
+        <h3>Select Specs to Search</h3>
+        <div id="filter-list" class="scroll-y"></div>
+        <div class="footer">
+            <button id="filter-apply">Apply</button>
+            <button id="filter-close">Close</button>
+        </div>
+    </div>
+</div>
+
+<div class="sl-modal" id="search-modal">
+    <div class="sl-modal-content">
+        <h3>All Search Results</h3>
+        <div id="search-list" class="scroll-y"></div>
+        <div class="footer">
+            <button id="prev-page">Prev</button>
+            <span   id="page-info"></span>
+            <button id="next-page">Next</button>
+            <button id="close-search-modal">Close</button>
+        </div>
+    </div>
+</div>
+
+<div class="sl-modal" id="ra-modal">
+    <div class="sl-modal-content">
+        <h3>RestAssured Log Search</h3>
+
+        <div id="ra-notifications"></div>
+
+        <textarea
+                id="ra-input"
+                placeholder="Paste RestAssured console log…"
+        ></textarea>
+
+        <div id="ra-status"></div>
+
+        <textarea id="ra-response" readonly></textarea>
+
+        <div class="footer">
+            <button id="ra-submit">Search</button>
+            <button id="ra-action">Send Response</button>
+            <button id="ra-close">Close</button>
+        </div>
+    </div>
+</div>
+
+<script src="/static/script.js"></script>
+</body>
+</html>
